@@ -1,5 +1,6 @@
 const canvasWidth = 600, canvasHeight = 380;
 const BEETLE_COUNT = 3;
+const KEEP_BEETLES_ON_SCREEN = true;
 
 // global count of how many times draw has been called.
 let ANIMATION_ITERATIONS = 0;
@@ -35,6 +36,16 @@ class Beetle {
     }
 
     updatePos() {
+        if (KEEP_BEETLES_ON_SCREEN) {
+            if (this.x <= 0 || this.x >= canvasWidth) {
+                this.velocity.x = -this.velocity.x;
+            }
+    
+            if (this.y <= 0 || this.y >= canvasHeight) {
+                this.velocity.y = -this.velocity.y;
+            }
+        }
+
         this.x += this.velocity.x;
         this.y += this.velocity.y;
         this.rot = Math.atan2(this.velocity.y, this.velocity.x) + Math.PI/2;
@@ -89,6 +100,7 @@ function draw() {
     background(255);
     update();
     ANIMATION_ITERATIONS++;
+    drawClover(200, 200, n = 3, 0.2);
 }
 
 function update() {
@@ -291,4 +303,40 @@ function drawBeetle(x, y, sc, rot, colors) {
             endShape();
         pop();
     pop();
+}
+
+
+function drawClover(x, y, n=3, sc) {
+    fill(96, 127, 117);
+
+   let rot = 0;
+   for (var i = 0; i < n; i++) {
+        push();
+            translate(x, y);
+            rotate(rot);
+            scale(sc);
+            
+            beginShape();
+                curveVertex(0, 0);
+                curveVertex(0, 0);
+                curveVertex(-34, -25)
+                curveVertex(-63, -39)
+                curveVertex(-94, -54)
+                curveVertex(-121, -64)
+                curveVertex(-153, -41)
+                curveVertex(-172, 4)
+                curveVertex(-172, 49)
+                curveVertex(-167, 77)
+                curveVertex(-151, 100)
+                curveVertex(-122, 122)
+                curveVertex(-92, 122)
+                curveVertex(-59, 104)
+                curveVertex(-26, 64)
+                curveVertex(-6, 31)
+                curveVertex(0, 0);
+                curveVertex(0, 0);
+            endShape();
+        pop();
+        rot += 2 * Math.PI / n;
+   }
 }
